@@ -365,6 +365,20 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
+@app.get("/v1/models")
+async def get_models():
+    models = [
+        {
+            "id": model_id,
+            "object": "model",
+            "created": 581983200,
+            "owned_by": "system",
+        }
+        for model_id in MODEL_MAPPING.keys()
+    ]
+    return {"data": models, "object": "list"}
+
+
 @app.post("/v1/chat/completions")
 async def proxy(request: Request):
     try:
