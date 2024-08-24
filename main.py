@@ -3,8 +3,9 @@ import random
 import string
 from collections import deque
 import time
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 import httpx
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import Depends, FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
 import json
 import tiktoken
@@ -15,9 +16,23 @@ from tenacity import (
     wait_exponential,
     retry_if_exception_type,
 )
+from dotenv import load_dotenv
+import os
 
 # 代理设置
 # PROXY = "http://localhost:7892"
+
+# 从 .env 文件中获取有效的API密钥
+VALID_API_KEYS = {os.getenv("API_KEY")}
+
+# 定义HTTPBearer类用于获取Authorization头
+auth_scheme = HTTPBearer()
+
+
+# 验证API密钥的函数
+def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme)):
+    if credentials.credentials not in VALID_API_KEYS:
+        raise HTTPException(status_code=403, detail="Invalid or missing API Key")
 
 
 def global_retry_decorator():
@@ -379,7 +394,7 @@ async def get_models():
     return {"data": models, "object": "list"}
 
 
-@app.post("/v1/chat/completions")
+@app.post("/v1/chat/completions", dependencies=[Depends(verify_api_key)])
 async def proxy(request: Request):
     try:
         json_data = await request.json()
