@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5179
 
 # 运行应用程序
-CMD ["uvicorn", "duck2api:app", "--host", "0.0.0.0", "--port", "5179"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5179"]
