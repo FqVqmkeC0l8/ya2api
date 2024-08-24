@@ -1,5 +1,9 @@
+aiofiles
+aiohttp
 fastapi
 httpx
-uvicorn
-aiohttp
+Requests
+tenacity
 tiktoken
+tqdm
+uvicorn
