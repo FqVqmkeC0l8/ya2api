@@ -2,6 +2,7 @@ aiofiles
 aiohttp
 fastapi
 httpx
+python-dotenv
 Requests
 tenacity
 tiktoken
