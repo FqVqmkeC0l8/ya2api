@@ -301,7 +301,6 @@ async def handle_non_stream_request(json_data, acc_headers, same_id, models, tot
     async with httpx.AsyncClient(
         timeout=httpx.Timeout(999, read=250),
         follow_redirects=True,
-        proxies={"http://": PROXY, "https://": PROXY},
     ) as stream_client:
         acc_headers["x-vqd-4"] = await x_vqd_manager.get_x_vqd_4()
         async with stream_client.stream(
