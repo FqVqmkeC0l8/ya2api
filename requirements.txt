@@ -1,0 +1,9 @@
+aiofiles
+aiohttp
+fastapi
+httpx
+Requests
+tenacity
+tiktoken
+tqdm
+uvicorn
